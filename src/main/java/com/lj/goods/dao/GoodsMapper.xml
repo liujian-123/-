@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.goods.dao.GoodsMapper">
+
+	<select id="selects" resultType="GoodsVO">
+		select g.*,GROUP_CONCAT(t.sname)sname from goods g left join  midder m on m.gid=g.gid left join typee t on m.sid=t.sid GROUP BY g.gid
+		<!-- <where>
+			<if test="name!=null and name!=''">
+				g.name like '%${name}%'
+			</if>
+			
+			<if test="gids!=null and gids.length!=0">
+				and t.sid in 
+				<foreach collection="gids"  open="(" item="sid" separator="," close=")" >
+					#{sid}
+				</foreach>
+			</if>
+		</where> -->
+		
+	</select>
+	
+	<select id="gettypees" resultType="Typee">
+		select * from typee
+	</select>
+
+	<insert id="addgoods" useGeneratedKeys="true" keyColumn="gid" keyProperty="gid">
+		insert into goods set gname=#{gname},gdate=#{gdate}	
+	</insert>
+	
+	<insert id="addmedder">
+		insert into midder set gid=${gid},sid=${sid}
+	</insert>
+</mapper>
